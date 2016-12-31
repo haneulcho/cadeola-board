@@ -1,0 +1,48 @@
+<include target="_header.html" />
+{@
+    $oDocument = getModel('document')->getDocument($document_srl);
+}
+	<div id="view">
+		<div class="dhead" cond="$act=='dispBoardModifyComment'" style="margin-bottom:8px;">
+			<span class="thidden">알림</span><span class="tooltip"><i class="ion-ios7-person"></i>{$oDocument->getNickName()}님의 글　{$oDocument->getRegdate('Y-m-d')} {$oDocument->getRegdate('H:i:s')}</span>
+			<h2 class="dcomment">{$oDocument->getTitle()}<i class="ion-ios7-chatbubble-outline" cond="$oDocument->getCommentCount()"></i><span class="txt_s" cond="$oDocument->getCommentCount()">{$oDocument->getCommentCount()}</span></h2>
+		</div>
+		<div class="dhead" cond="$act=='dispBoardReplyComment' && $oSourceComment->isExists()" style="margin-bottom:8px;">
+			<span class="thidden">알림</span><span class="tooltip"><i class="ion-ios7-person"></i>{$oSourceComment->getNickName()}님의 댓글<block cond="$logged_info->is_admin=='Y'">　{$oSourceComment->getRegdate('Y-m-d')} {$oSourceComment->getRegdate('H:i:s')}</block></span>
+			<h2 class="dcomment">{$oSourceComment->getContent(false, false, false)}</h2>
+		</div>
+		<div class="chead">
+			<span class="thidden">알림</span><span class="tooltip"><i class="ion-ios7-chatboxes-outline"></i><block cond="$act=='dispBoardModifyComment'">위 글에 작성한 댓글을 수정해주세요.</block><block cond="$act=='dispBoardReplyComment'">위 내용에 대한 답댓글을 작성해주세요.</block></span>
+		</div>
+		<div class="dwrite">
+		<form action="./" method="post" onsubmit="return procFilter(this, insert_comment)" class="write_comment">
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="document_srl" value="{$oComment->get('document_srl')}" />
+			<input type="hidden" name="comment_srl" value="{$oComment->get('comment_srl')}" />
+			<input type="hidden" name="parent_srl" value="{$oComment->get('parent_srl')}" />
+			<input type="hidden" name="content" value="{htmlspecialchars($oComment->get('content'))}" />
+<?php
+$oContext = &Context::getInstance();
+$oContext->init();
+$doc_srl = $__Context->oDocument->document_srl;
+?>
+			<div class="identification">
+				<div class="usernickname">
+					<label for="userName"><i class="ion-ios7-person-outline"></i>랜덤닉</label>
+					<input type="text" name="nick_name" id="userName" value="<?php echo substr(md5($doc_srl.$_SERVER['REMOTE_ADDR']),-6) ?>" cond="!$grant->manager" readonly />
+					<input type="text" name="nick_name" id="userName" value="캐더라" cond="$grant->manager" readonly />
+				</div>
+				<div class="userpassword" cond="!$is_logged">
+					<label for="userPw"><i class="ion-ios7-locked-outline"></i></label>
+					<input type="password" name="password" id="userPw" />
+				</div>
+			</div>
+			{$oComment->getEditor()}
+			<div class="dbtns">
+				<button type="button" class="dbtn_cancel" onclick="history.back()"><i class="ion-ios7-close-outline"></i>취소</button>
+				<button type="submit" class="dbtn_ok"><i class="ion-ios7-checkmark"></i><block cond="$act=='dispBoardModifyComment'">수정</block><block cond="$act=='dispBoardReplyComment'">완료</block></button>
+			</div>
+		</form>
+		</div>
+	</div>
+<include target="_footer.html" />

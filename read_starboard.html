@@ -1,0 +1,53 @@
+<div id="emphasis" class="starboard">
+	{@ $files = $oDocument->getUploadedFiles(); }
+	<div class="container">
+		<h2 class="vtitle">{$oDocument->getTitle()}</h2>
+		<div class="vimg xe_content"><!--@if($oDocument->thumbnailExists())--><img src="{$files[0]->uploaded_filename}" rel="xe_gallery" alt="{$oDocument->getTitle()}" title="{$oDocument->getTitle()}" cond="$oDocument->isExtraVarsExists() && (!$oDocument->isSecret() || $oDocument->isGranted())" /><!--@else--><img src="nothumbnail_l.png" alt="{$oDocument->getTitle()} 방영예정 드라마로 포스터 이미지 준비중" /><!--@end--></div>
+		<include target="_star.html" />
+	</div>
+</div>
+				<div id="view">
+					<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
+					<form action="./" method="get" class="secretCon" onsubmit="return procFilter(this, input_password)">
+						<input type="hidden" name="mid" value="{$mid}" />
+						<input type="hidden" name="page" value="{$page}" />
+						<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
+						<p><label for="cpw">{$lang->msg_is_secret} {$lang->msg_input_password}</label></p>
+						<div><input type="password" name="password" id="cpw" class="iText" /> <span class="bt"><input type="submit" value="{$lang->cmd_input}" /></span></div>
+					</form>
+					<!--@else-->
+					<ul id="tab">
+						<li class="tab_description active">드라마 정보</li>
+						<li class="tab_intention">기획의도</li>
+					</ul>
+					<div class="vinfo owl-carousel">
+						<div class="vdescription item" cond="$oDocument->isExtraVarsExists() && (!$oDocument->isSecret() || $oDocument->isGranted())">
+							<dl>
+								<dt><i class="ion-ios7-paper-outline"></i>주요내용</dt>
+								<dd>{$oDocument ->getExtraEidValueHTML('drama_summary')}</dd>
+								<dt><i class="ion-steam"></i>기본장르</dt>
+								<dd>{$oDocument ->getExtraEidValueHTML('drama_genre')}</dd>
+								<dt><i class="ion-ios7-stopwatch-outline"></i>방영정보</dt>
+								<dd>{$oDocument ->getExtraEidValueHTML('drama_where')} {$oDocument ->getExtraEidValueHTML('drama_when')}</dd>
+								<dt><i class="ion-ios7-calendar-outline"></i>방영기간</dt>
+								<dd>{$oDocument ->getExtraEidValueHTML('drama_days')}</dd>
+								<dt><i class="ion-film-marker"></i>연출극본</dt>
+								<dd>{$oDocument ->getExtraEidValueHTML('drama_staff')}</dd>
+								<dt><i class="ion-ios7-people-outline"></i>주출연진</dt>
+								<dd>{$oDocument ->getExtraEidValueHTML('drama_cast')}</dd>
+								<dt><i class="ion-ios7-monitor-outline"></i>홈페이지</dt>
+								<dd>{$oDocument ->getExtraEidValueHTML('drama_official')}</dd>
+							</dl>
+						</div>
+						<div class="vcontents item">
+							{$oDocument->getContent(false)}
+						</div>
+					</div>
+					<div class="btn_share"><i class="ion-star"></i>글 공유</div>
+					<div class="vbtns">
+						<a href="{getUrl('act','dispBoardWrite','document_srl',$oDocument->document_srl,'comment_srl','')}" cond="$oDocument->isEditable()"><i class="ion-ios7-compose-outline"></i>수정</a>
+						<a href="{getUrl('act','dispBoardDelete','document_srl',$oDocument->document_srl,'comment_srl','')}" cond="$oDocument->isEditable()"><i class="ion-ios7-trash-outline"></i>삭제</a>
+					</div>
+				</div>
+				<!--@end-->
+<include target="_comment.html" />

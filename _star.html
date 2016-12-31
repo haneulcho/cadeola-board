@@ -1,0 +1,39 @@
+{@
+	$document_srl = $oDocument->document_srl;
+	$oDB = &DB::getInstance();
+	$query = $oDB->_query('select star_data, star_average, ipaddress from xe_document_star_log where document_srl = '.$document_srl);
+	$rating = $oDB->_fetch($query);
+    $module_srl = $module_info->module_srl;
+    $member_srl = $logged_info->member_srl;
+    $star_data = $rating->star_data;
+    $star_average = $rating->star_average;
+    $title = $oDocument->getTitle();
+    $aa = $rating->ipaddress;
+	$bb = $oDocument ->getExtraEidValueHTML('drama_name');
+}
+<!--@if($star_data)-->
+{@ $rating_count = sizeof(explode(",", $star_data)); $rating_average = sprintf("%.1f", $star_average);}
+<!--@else-->
+{@ $rating_count = 0; $rating_average = "0.0";}
+<!--@end-->
+<?php
+	$oContext = &Context::getInstance();
+	$oContext->init();
+    $star_ip = $__Context->aa;
+?>
+
+<?php if(strpos($star_ip, $_SERVER[REMOTE_ADDR])!==false) :?>
+	<div class="vstar">
+		<span class="thidden">알림</span><span id="staralert" class="tooltip">이미 '{$oDocument ->getExtraEidValueHTML('drama_name')}'에 <strong>별점을 주셨네요!</strong></span>
+		<div class="star">
+		<!--@for($m=1; $m<=floor($rating_average); $m++)--><img src="http://cadeola.com/xe/layouts/cadeola_layout/images/star/s{$m%2?"1":"2"}1.png" id="stars_img{$m}_{$document_srl}_inview" onClick="alert('이미 별점 평가에 참여하셨어요. (동일 ip 기준 1회 평가 가능)')" /><!--@end--><!--@for($m=floor($rating_average)+1; $m<=10; $m++)--><img src="http://cadeola.com/xe/layouts/cadeola_layout/images/star/s{$m%2?"1":"2"}0.png" id="stars_img{$m}_{$document_srl}_inview" onClick="alert('이미 별점 평가에 참여하셨어요. (동일 ip 기준 1회 평가 가능)')" /><!--@end--><span id="stars_comment_{$document_srl}_inview">{$rating_average}</span>
+		</div>
+	</div>
+<?php else : ?>
+	<div class="vstar">
+		<span class="thidden">알림</span><span id="staralert" class="tooltip">별을 클릭해 지금 <strong>별점</strong>을 매겨주세요!</span>
+		<div class="star">
+		<!--@for($m=1; $m<=floor($rating_average); $m++)--><img src="http://cadeola.com/xe/layouts/cadeola_layout/images/star/s{$m%2?"1":"2"}1.png" id="stars_img{$m}_{$document_srl}_inview" onClick="stars_c('{$m}', '{$module_srl}', '{$document_srl}', '{$member_srl}', '{$title}', 'inview')" onMouseOver="stars_o('{$m}', '{$rating_average}', '{$document_srl}', 'inview')" onmouseout="stars_o('', '{$rating_average}', '{$document_srl}', 'inview')" /><!--@end--><!--@for($m=floor($rating_average)+1; $m<=10; $m++)--><img src="http://cadeola.com/xe/layouts/cadeola_layout/images/star/s{$m%2?"1":"2"}0.png" id="stars_img{$m}_{$document_srl}_inview" onClick="stars_c('{$m}', '{$module_srl}', '{$document_srl}', '{$member_srl}', '{$title}', 'inview')" onMouseOver="stars_o('{$m}', '{$rating_average}', '{$document_srl}', 'inview')" onmouseout="stars_o('', '{$rating_average}', '{$document_srl}', 'inview')" /><!--@end--><span id="stars_comment_{$document_srl}_inview">{$rating_average}</span>
+		</div>
+	</div>
+<?php endif; ?>

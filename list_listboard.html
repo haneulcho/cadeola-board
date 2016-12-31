@@ -1,0 +1,45 @@
+<h2 class="cchat" cond="$mid=='cchat'"><span class="thidden"><i class="ion-ios7-chatboxes"></i>캐더라 자유 잡담</span><p class="txt_s"><i class="ion-ios7-information"></i>모든 문의: <strong>cadeola@cadeola.com</strong></p></h2>
+<div class="topbar" cond="$module_info->use_category=='Y'">
+	<div class="orderby">
+		<select name="categorylist" onchange="location=this.options[this.selectedIndex].value;">
+			<option value="{getUrl('', 'mid', 'cchat', 'document_srl','', 'page', '')}"<!--@if(!$category)--> selected<!--@end-->>전체</option>
+			<option value="{getUrl(category,15071,'document_srl','', 'page', '')}"<!--@if($category==15071)--> selected<!--@end-->>잡담</option>
+			<option value="{getUrl(category,15072,'document_srl','', 'page', '')}"<!--@if($category==15072)--> selected<!--@end-->>정보 / 자료</option>
+		</select>
+		<select name="orderlist" onchange="location=this.options[this.selectedIndex].value;">
+			<option value="{getUrl('act','','document_srl','','sort_index','last_update','order_type','desc')}"<!--@if($sort_index==last_update)--> selected<!--@end-->>최근 수정 순</option>
+			<option value="{getUrl('act','','document_srl','','sort_index','readed_count','order_type','desc')}"<!--@if($sort_index==readed_count && $order_type==desc)--> selected<!--@end-->>조회 많은 순</option>
+			<option value="{getUrl('act','','document_srl','','sort_index','comment_count','order_type','desc')}"<!--@if($sort_index==comment_count && $order_type==desc)--> selected<!--@end-->>댓글 많은 순</option>
+			<option value="{getUrl('act','','document_srl','','sort_index','voted_count','order_type','desc')}"<!--@if($sort_index==voted_count && $order_type==desc)--> selected<!--@end-->>추천 많은 순</option>
+		</select>
+	</div>
+	<div class="btns_right">
+		<a href="{getUrl('act','dispBoardAdminBoardInfo')}" title="{$lang->cmd_setup}" class="btn_admin" cond="$grant->manager"><i class="ion-gear-a"></i><span class="thidden">{$lang->cmd_setup}</span></a>
+		<a href="{getUrl('act','dispBoardWrite','document_srl','')}" class="btn_write" cond="$grant->write_document"><i class="ion-edit"></i>{$lang->cmd_write}</a>
+	</div>
+</div>
+<ul id="cchat" cond="$document_list || $notice_list">
+	<li loop="$notice_list=>$no,$document" class="lnotice">
+		<a href="{getUrl('document_srl',$document->document_srl, 'cpage','')}">
+			<div>
+				<span class="tagc">공지</span>
+				<h3>{$document->getTitle(72)}</h3>
+				<i class="ion-ios7-chatbubble-outline" cond="$document->getCommentCount()"></i><span cond="$document->getCommentCount()">{$document->getCommentCount()}</span>
+			</div>
+		</a>
+    </li>
+    <li loop="$document_list=>$no,$document">
+		<a href="{getUrl('document_srl',$document->document_srl, 'cpage','')}">
+			<div class="lmain">
+				<h3<!--@if($oDocument && $document_srl == $document->document_srl)--> class="reading"<!--@end-->>{$document->getTitle(38)}</h3>
+				<i class="ion-ios7-chatbubble-outline" cond="$document->getCommentCount()"></i><span cond="$document->getCommentCount()">{$document->getCommentCount()}</span>
+			</div>
+			<div class="lsub">
+				<span class="lname"><i class="ion-ios7-person"></i>{$document->getNickName()}</span>
+				<span class="ldate"><i class="ion-ios7-clock-outline"></i>{$document->getRegdate('Y-m-d')}</span>
+				<span class="lreaded"><i class="ion-ios7-eye"></i>{$document->get('readed_count')>0?$document->get('readed_count'):'0'}</span>
+				<span class="voted" cond="$document->get('voted_count') > 0"><i class="ion-thumbsup"></i>{$document->get('voted_count')}</span>
+			</div>
+		</a>
+    </li>
+</ul>

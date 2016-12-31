@@ -1,0 +1,53 @@
+{@
+	$document_srl = $document->document_srl;
+	$oDB = &DB::getInstance();
+	$query = $oDB->_query('select star_data, star_average, ipaddress from xe_document_star_log where document_srl = '.$document_srl);
+	$rating = $oDB->_fetch($query);
+    $module_srl = $module_info->module_srl;
+    $member_srl = $logged_info->member_srl;      
+    $star_data = $rating->star_data;
+    $star_average = $rating->star_average;
+    $title = $document->getTitle();
+    $aa = $rating->ipaddress;
+}
+<!--@if($star_data)-->
+{@ $rating_count = sizeof(explode(",", $star_data)); $rating_average = sprintf("%.1f", $star_average);}
+<!--@else-->
+{@ $rating_count = 0; $rating_average = "0.0";}
+<!--@end-->
+<?php
+	$oContext = &Context::getInstance();
+	$oContext->init();
+    $star_ip = $__Context->aa;
+?>
+<?php if(strpos($star_ip, $_SERVER[REMOTE_ADDR])!==false) :?>                  
+    <span class="btn_rating hidden voteoff">☆ 별점 평가 완료</span>
+    <div class="rating_container">
+        <div id="rating_{$document_srl}" class="rating">
+            <p class="title">이미 별점 평가에 참여하셨어요~ :D</p>
+            <div class="star">
+<!--@for($j=1; $j<=floor($rating_average); $j++)--><img src="http://cadeola.com/xe/layouts/cadeola_layout/images/star/s{$j%2?"1":"2"}1.png" id="stars_img{$j}_{$document_srl}_inlist" onClick="alert('이미 별점 평가에 참여하셨어요. (동일 ip 기준 1회 평가 가능)')" /><!--@end--><!--@for($j=floor($rating_average)+1; $j<=10; $j++)--><img src="http://cadeola.com/xe/layouts/cadeola_layout/images/star/s{$j%2?"1":"2"}0.png" id="stars_img{$j}_{$document_srl}_inlist" onClick="alert('이미 별점 평가에 참여하셨어요. (동일 ip 기준 1회 평가 가능)')" /><!--@end-->
+            </div>
+            <div class="count">
+                <span class="total">(총 {$rating_count}명 참여)</span>
+                <span id="stars_comment_{$document_srl}_inlist" class="average">{$rating_average}점</span>
+            </div>
+        </div>
+        <div class="rating_bg"></div>
+    </div>
+<?php else : ?>
+    <span class="btn_rating hidden">☆ 바로 별점 주기</span>
+    <div class="rating_container">
+        <div id="rating_{$document_srl}" class="rating">
+            <p class="title">별을 클릭해 이 드라마를 평가해주세요!</p>
+            <div class="star">
+<!--@for($j=1; $j<=floor($rating_average); $j++)--><img src="http://cadeola.com/xe/layouts/cadeola_layout/images/star/s{$j%2?"1":"2"}1.png" id="stars_img{$j}_{$document_srl}_inlist" onClick="stars_c('{$j}', '{$module_srl}', '{$document_srl}', '{$member_srl}', '{$title}', 'inlist')" onMouseOver="stars_o('{$j}', '{$rating_average}', '{$document_srl}', 'inlist')" onmouseout="stars_o('', '{$rating_average}', '{$document_srl}', 'inlist')" /><!--@end--><!--@for($j=floor($rating_average)+1; $j<=10; $j++)--><img src="http://cadeola.com/xe/layouts/cadeola_layout/images/star/s{$j%2?"1":"2"}0.png" id="stars_img{$j}_{$document_srl}_inlist" onClick="stars_c('{$j}', '{$module_srl}', '{$document_srl}', '{$member_srl}', '{$title}', 'inlist')" onMouseOver="stars_o('{$j}', '{$rating_average}', '{$document_srl}', 'inlist')" onmouseout="stars_o('', '{$rating_average}', '{$document_srl}', 'inlist')" /><!--@end-->
+            </div>
+            <div class="count">
+                <span class="total">(총 {$rating_count}명 참여)</span>
+                <span id="stars_comment_{$document_srl}_inlist" class="average">{$rating_average}점</span>
+            </div>
+        </div>
+        <div class="rating_bg"></div>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,127 @@
+<include target="_header.html" />
+{@
+include_once(_XE_PATH_.'/modules/file/file.class.php');
+include_once(_XE_PATH_.'/modules/file/file.controller.php');
+$oFileController = &getController('file');
+$editor_sequence = '1';
+$upload_target_srl = $document_srl;
+$oFileController->setUploadInfo($editor_sequence, $upload_target_srl);
+$_SESSION['upload_info'][$editor_sequence]->enabled = true;
+$_SESSION['upload_info'][$editor_sequence]->upload_target_srl = $upload_target_srl;
+}
+
+<load target="js/editor_m.js" />
+<load target="js/ajaxfileupload.js" type="body" />
+
+<script type="text/javascript">//<![CDATA[
+var lang_confirm_delete ='{$lang->confirm_delete}';
+//]]></script>
+
+<div id="write">
+	<div class="whead">
+		<span class="thidden">알림</span><span class="tooltip"><i class="ion-edit"></i>{$mid} - 글쓰기</span>
+	</div>
+	<div class="wwrite">
+	<form action="./" method="POST" id="ff">
+		<input type="hidden" name="mid" value="{$mid}" />
+		<input type="hidden" name="document_srl" value="{$document_srl}" />
+		<input type="hidden" name="use_html" value="Y" />
+	<!--// 상단 : 카테고리, 제목 -->
+		<div class="wtop">	
+			<div class="wcategory">
+				<select cond="$module_info->use_category=='Y' && $category_list" name="category_srl" id="wcateSelect" class="category">
+					<option loop="$category_list => $val" disabled="disabled"|cond="!$val->grant" value="{$val->category_srl}" selected="selected"|cond="$val->grant&&$val->selected||$val->category_srl==$oDocument->get('category_srl')">{str_repeat("&nbsp;&nbsp;",$val->depth)}{$val->title} ({$val->document_count})</option>
+				</select>
+			</div>
+			<div class="wtitle">
+				<input cond="$oDocument->getTitleText()" type="text" name="title" title="{$lang->title}" value="{htmlspecialchars($oDocument->getTitleText())}" />
+				<input cond="!$oDocument->getTitleText()" type="text" name="title" title="{$lang->title}" placeholder="{$lang->title}" />
+			</div>
+		</div> <!-- wtop END -->
+		<table cond="count($extra_keys)" class="wextravar">
+			<tr loop="$extra_keys=>$key,$val">
+				<th scope="row"><block cond="$val->is_required=='Y'"><i class="icon-ok" style="font-size:11px"></i></block> {$val->name}</th>
+				<td>{$val->getFormHTML()}</td>
+			</tr>
+		</table> <!-- extra vars END -->
+		<div class="m_editor">
+			<textarea name="content" id="nText" col="50" rows="8" placeholder="내용" value="<!--@if(!$oDocument->getContentText() && $module_info->content_default)-->{htmlspecialchars($module_info->content_default)}<!--@else-->{$oDocument->getContentText()}<!--@end-->"><!--@if(!$oDocument->getContentText() && $module_info->content_default)-->{htmlspecialchars($module_info->content_default)}<!--@else-->{$oDocument->getContentText()}<!--@end--></textarea>
+		</div> <!-- m_deitor END-->
+<?php
+	$oContext = &Context::getInstance();
+	$oContext->init();
+    $mid = $__Context->mid;
+	$date = date('ymd');
+	$nick = substr(md5($mid.$date.$_SERVER['REMOTE_ADDR']),-6);
+?>
+		<div class="identification">
+			<div class="usernickname">
+				<label for="userName"><i class="ion-ios7-person-outline"></i>랜덤닉</label>
+				<input type="hidden" name="comment_status" value="ALLOW" checked="checked"|cond="$oDocument->allowComment()" id="comment_status" />
+				<input type="text" name="nick_name" id="userName" value="<?=$nick?>" cond="!$grant->manager" readonly />
+				<input type="text" name="nick_name" id="userName" value="캐더라" cond="$grant->manager" readonly />
+			</div>
+			<div class="userpassword" cond="!$is_logged">
+				<label for="userPw"><i class="ion-ios7-locked-outline"></i></label>
+				<input type="password" name="password" id="userPw" placeholder="비밀번호" />
+			</div>
+		</div> <!-- identification END -->
+		<!--// 글쓰기 옵션 체크 -->
+		<block cond="$grant->manager">
+		<div class="opt_chk clear">
+			<div class="itx_wrp color_wrp" title="{$lang->title_color}" cond="!Mobile::isMobileCheckByAgent()">
+				<!--%load_js_plugin("ui.colorpicker")-->
+				<span class="fff"></span>
+				<label for="title_color">{$lang->title_color}</label>
+				<input type="text" name="title_color" id="title_color" class="color-indicator" value="{$oDocument->get('title_color')}"|cond="$oDocument->get('title_color')!='N'" />
+			</div>
+			<div class="section">
+				<input type="checkbox" name="title_bold" id="title_bold" value="Y" checked="checked"|cond="$oDocument->get('title_bold')=='Y'" />
+				<label for="title_bold">{$lang->title_bold}</label>
+				<input type="checkbox" name="is_notice" value="Y" checked="checked"|cond="$oDocument->isNotice()" id="is_notice" />
+				<label for="is_notice">{$lang->notice}</label>
+				<input type="checkbox" name="notify_message" value="Y" checked="checked"|cond="$oDocument->useNotify() || (!$oDocument->useNotify() && @in_array(notify,$module_info->wrt_opt))" id="notify_message" />
+				<label for="notify_message">{$lang->notify}</label>
+			</div>
+			<block cond="is_array($status_list)" class="section">
+				<!--@foreach($status_list AS $key=>$value)-->
+				<input cond="@!in_array(secret,$module_info->wrt_opt)" type="hidden" name="status" value="{$key}" id="{$key}" checked="checked"|cond="$oDocument->get('status')==$key || ($key=='PUBLIC' && !$document_srl)" />
+				<input cond="@in_array(secret,$module_info->wrt_opt)" type="hidden" name="status" value="{$key}" id="{$key}" checked="checked"|cond="$oDocument->get('status')==$key || ($key=='SECRET' && !$document_srl)" />
+				<!--@end-->
+			</block>
+		</div>
+		</block>
+	</form>
+	<!--// 이미지 업로드 -->
+	<div class="btn_upload">
+		<form id="upForm" name="form" action="" method="POST" enctype="multipart/form-data">
+			<span class="btn_upload_fake"><i class="ion-images"></i>이미지 첨부</span>
+			<input id="Filedata" type="file" name="Filedata" accept="image/*" />
+		</form>
+	</div>
+	<div id="mUpload">
+		<div class="msg_upload <!--@if($oDocument->hasUploadedFiles())--> is_img<!--@end-->">
+			<p>{$lang->select_files_to_insert}</p>
+			<span>첨부된 이미지가 없네요. 이미지 첨부를 눌러주세요.</span>
+		</div>
+		<ul id="files">
+			<block cond="$oDocument->hasUploadedFiles()" loop="$oDocument->getUploadedFiles()=>$key,$file">
+{@
+	$ext = substr($file->source_filename, -4);
+	$ext = strtolower($ext);
+	$type = 'etc';
+	if(in_array($ext,array('.jpg','jpeg','.gif','.png'))) $type = 'img';
+	if(in_array($ext,array('.mp3','.wav','.ogg','.aac'))) $type = 'music';
+	if(in_array($ext,array('webm','.mp4','.ogv','.avi','.mov','.mkv'))) $type = 'media';
+}
+			<li cond="$type=='img'" id="{$file->file_srl}"class="success select"><button type="button" data-file="{$file->uploaded_filename}" data-type="img" title="{$file->source_filename}" style="background-image:url({$file->uploaded_filename})" onclick="jQuery(this).parent().toggleClass('select')"><b>✔</b></button><a href="#" class="cancelfile" onclick="delete_file({$file->file_srl});return false"><b>X</b></a></li>
+			</block>
+		</ul>
+	</div> <!-- mUpload END -->
+	<div class="dbtns">
+		<button type="button" class="dbtn_cancel" onclick="history.back()"><i class="ion-ios7-close-outline"></i>취소</button>
+		<button type="submit" id="frmSubmit" class="dbtn_ok" onclick="fileToTextarea();"><i class="ion-ios7-checkmark"></i>글쓰기</button>
+	</div>
+	</div> <!-- wwrite END -->
+</div> <!-- write ENd -->
+<include target="_footer.html" />

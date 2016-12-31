@@ -1,0 +1,21 @@
+<include target="_header.html" />
+	<div id="view">
+		<div class="dhead" cond="$oComment->isExists()">
+			<span class="thidden">알림</span><span class="tooltip"><i class="ion-ios7-person"></i>{$oComment->getNickName()}님의 댓글<block cond="$logged_info->is_admin=='Y'">　{$oComment->getRegdate('Y-m-d')} {$oComment->getRegdate('H:i:s')}</block></span>
+			<h2 class="dcomment">{$oComment->getContent(false, false, false)}</h2>
+		</div>
+		<div class="dwrite">
+		<form action="./" method="get" onsubmit="return procFilter(this, delete_comment)">
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="page" value="{$page}" />
+			<input type="hidden" name="document_srl" value="{$oComment->get('document_srl')}" />
+			<input type="hidden" name="comment_srl" value="{$oComment->get('comment_srl')}" />
+			<p>{$lang->cmd_comment_do} {$lang->confirm_delete}</p>
+			<div class="dbtns">
+				<button type="button" class="dbtn_cancel" onclick="history.back()"><i class="ion-ios7-close-outline"></i>취소</button>
+				<button type="submit" class="dbtn_ok"><i class="ion-ios7-trash-outline"></i>삭제</button>
+			</div>
+		</form>
+		</div>
+	</div>
+<include target="_footer.html" />

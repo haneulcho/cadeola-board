@@ -1,0 +1,11 @@
+<include target="_header.html" />
+<div class="infoWrap"|cond="$layout_info->backgroundColor">
+	<div class="context_message2_1">
+	    <h1>{$message}</h1>
+	    <div class="btArea">
+	        <span class="bt"><a cond="!$is_logged" href="{getUrl('act','dispMemberLoginForm')}">{$lang->cmd_login}</a></span>
+	        <span class="bt"><button type="button" onclick="history.back()">{$lang->cmd_back}</button></span>
+	    </div>
+	</div>
+</div>
+<include target="_footer.html" />

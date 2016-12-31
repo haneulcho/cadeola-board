@@ -1,0 +1,82 @@
+				<div id="comments">
+					<div class="chead" cond="$oDocument->getCommentcount()">
+						<span class="thidden">알림</span><span class="tooltip"><i class="ion-ios7-chatboxes-outline"></i>이 글에 달린 댓글 {$oDocument->getCommentcount()}개</span>
+					</div>
+{@
+ $oDB = &DB::getInstance();
+ $query = $oDB->_query('select regdate from xe_comments where document_srl = '.$document_srl);
+ $result = $oDB->_fetch($query);
+ $no = array();
+ $numb = count($result);
+}
+					<ul class="cbody" cond="$oDocument->getCommentcount()">
+<block loop="$i=0;$i<$numb;$i++" cond="$numb!=1">
+{@ $no[] = $result[$i]->regdate}
+</block>
+{@ sort($no)}
+						<li loop="$oDocument->getComments()=>$key,$comment" id="comment_{$comment->comment_srl}" class="indent in{($comment->get('depth'))}"|cond="$comment->get('depth')">
+<block loop="$no => $k,$v" cond="$v==$comment->get('regdate')">
+{@ $k++}
+<? break ?>
+</block>
+							<!--@if(!$comment->isAccessible())-->
+							<div class="ccontents">
+								<form action="./" method="get" class="secretCon" onsubmit="return procFilter(this, input_password)">
+									<p><label for="cpw_{$comment->comment_srl}">{$lang->msg_is_secret} {$lang->msg_input_password}</label></p>
+									<div><input type="password" name="password" id="cpw_{$comment->comment_srl}" class="iText" /> <span class="bt"><input type="submit" value="{$lang->cmd_input}" /></span></div>
+									<input type="hidden" name="mid" value="{$mid}" />
+									<input type="hidden" name="page" value="{$page}" />
+									<input type="hidden" name="document_srl" value="{$comment->get('document_srl')}" />
+									<input type="hidden" name="comment_srl" value="{$comment->get('comment_srl')}" />
+								</form>
+							</div>
+							<!--@else-->
+							<!--@if($comment->getNickName() == '캐더라')-->
+							<div class="cname" style="color:#8e44ad">{$comment->getNickName()}</div>
+							<!--@else-->
+							<div class="cname" cond="$numb==1">1_{$comment->getNickName()}</div>
+							<div class="cname" cond="$numb!=1">{$k}_{$comment->getNickName()}</div>
+							<!--@end-->
+							<div class="cbtns">
+								<a href="{getUrl('act','dispBoardModifyComment','comment_srl',$comment->comment_srl)}" cond="$comment->isGranted()||!$comment->get('member_srl')"><i class="ion-ios7-compose-outline"></i>수정</a>
+								<a href="{getUrl('act','dispBoardDeleteComment','comment_srl',$comment->comment_srl)}" cond="$comment->isGranted()||!$comment->get('member_srl')"><i class="ion-ios7-trash-outline"></i>삭제</a>
+								<a href="{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}" class="btn_replymore" cond="!$comment->get('depth') && $oDocument->allowComment()"><i class="ion-ios7-chatbubble-outline"></i>답댓글</a>
+							</div>
+							<div class="ccontents">{$comment->getContent(false, false, false)}
+								<!--@if($logged_info->is_admin=="Y")-->
+								<span class="onlyadmin txt_s">{$comment->getRegdate('Y-m-d H:i')}</span><span class="onlyadmin txt_s">{$comment->getIpaddress()}</span>
+								<!--@end-->
+							</div>
+							<!--@end-->
+						</li>
+					</ul>
+					<div class="chead">
+						<span class="thidden">알림</span><span class="tooltip"><i class="ion-ios7-chatboxes-outline"></i>지금 댓글로 이야기를 풀어주세요!</span>
+					</div>
+					<div class="cwrite" cond="$grant->write_comment && $oDocument->isEnableComment()">
+					<form action="./" method="post" onsubmit="return procFilter(this, insert_comment)" class="write_comment" id="write_comment">
+						<input type="hidden" name="mid" value="{$mid}" />
+						<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
+						<input type="hidden" name="comment_srl" value="" />
+						<input type="hidden" name="content" value="" />
+<?php
+	$oContext = &Context::getInstance();
+	$oContext->init();
+    $doc_srl = $__Context->oDocument->document_srl;
+?>
+						<div class="identification">
+							<div class="usernickname">
+								<label for="userName"><i class="ion-ios7-person-outline"></i>랜덤닉</label>
+								<input type="text" name="nick_name" id="userName" value="<?php echo substr(md5($doc_srl.$_SERVER['REMOTE_ADDR']),-6) ?>" cond="!$grant->manager" readonly />
+								<input type="text" name="nick_name" id="userName" value="캐더라" cond="$grant->manager" readonly />
+							</div>
+							<div class="userpassword" cond="!$is_logged">
+								<label for="userPw"><i class="ion-ios7-locked-outline"></i></label>
+								<input type="password" name="password" id="userPw" />
+							</div>
+						</div>
+						{$oDocument->getCommentEditor()}
+						<button class="btn_reply" type="submit"><i class="ion-ios7-checkmark-outline"></i>입력완료</button>
+					</form>
+					</div>
+				</div>

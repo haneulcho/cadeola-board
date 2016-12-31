@@ -1,0 +1,76 @@
+﻿@charset "utf-8";
+::-webkit-input-placeholder {color:#8e44ad;} ::-moz-placeholder {color:#8e44ad;}  :-ms-input-placeholder {color:#8e44ad;} input:-moz-placeholder {color:#8e44ad;}
+.required::-webkit-input-placeholder:after {content:"*"; color:red;}
+.required::-moz-placeholder:after {content:"*"; color:red;}
+.required:-ms-input-placeholder:after {content:"*"; color:red;}
+.requiredinput:-moz-placeholder:after {content:"*"; color:red;}
+input[type="checkbox"] {width:20px; height:20px; margin-right:5px; vertical-align:-4px; border:1px solid #ccc; outline:0; border-radius:0; -webkit-appearance:none; -moz-appearance:none; appearance:none;
+-webkit-transition:border linear .3s;
+-moz-transition:border linear .3s;
+-o-transition:border linear .3s;
+transition:border linear .3s;}
+input[type="checkbox"] + label {vertical-align:1px;}
+input[type="checkbox"]:checked {border-color:#42cfc6; outline:0; background:url('../../../../../m.layouts/cadeola_layout_m/images/checkmark.png') #fff no-repeat 2px 2px; background-size:14px 14px;}
+input[type="checkbox"]:checked + label {color:#42cfc6; font-weight:bold;}
+#write {padding:10px 8px; background-color:#f4f4f4;}
+#write:after {content:" "; display:block; clear:both;}
+.wwrite {padding:12px 15px 15px 15px; background-color:#fff;
+-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.05);
+-moz-box-shadow:0 1px 1px rgba(0,0,0,0.05);
+box-shadow:0 1px 1px rgba(0,0,0,0.05);}
+.wwrite:after {content:" "; display:block; clear:both;}
+.wwrite form {overflow:hidden;}
+.whead .tooltip {padding-top:5px; color:#fff; vertical-align:-1px; background-color:#42cfc6;}
+.whead .tooltip>i {vertical-align:-1px;}
+.wtop {margin-bottom:5px;}
+.wcategory {float:left;}
+.wcategory select {min-width:95px; height:30px; margin:0; padding:2px 25px 2px 2px; border:1px solid #eeeae5; outline:0; color:#888; font-family:'Jeju Gothic'; letter-spacing:-1.4px; font-size:12px; background:url('../../../../../m.layouts/cadeola_layout_m/images/checkmark.png') #fff no-repeat; background-size:14px 14px; background-position:right 6px top 7px;
+-webkit-transition:border linear .3s;
+-moz-transition:border linear .3s;
+-o-transition:border linear .3s;
+transition:border linear .3s;}
+.wcategory select:focus {border-color:#42cfc6; outline:0;}
+.wtitle {margin-left:105px;}
+.wtitle input[type="text"], table input[type="text"] {display:block; width:100%; height:30px; padding:6px; line-height:19px; border:1px solid #eeeae5; background-color:#f9f7f6;}
+.wextravar th {padding:9px 15px 0 0; vertical-align:top; text-align:left; font-size:13px; font-weight:normal; font-family:'Jeju Gothic'; letter-spacing:-1.4px; white-space: nowrap;}
+.wextravar td {width:99%; padding-bottom:5px;}
+.wextravar td>ul {overflow:hidden; padding-bottom:8px;}
+.wextravar td>ul>li {float:left; margin:9px 10px 0 0;}
+.section input[type="checkbox"] {margin-right:1px;}
+.section input[type="checkbox"] + label {margin-right:10px;}
+.m_editor {clear:both; display:block; margin:0; padding:0;}
+.m_editor textarea {width:100%; max-width:100%; height:140px; resize:none; margin-bottom:10px; padding:6px; line-height:19px; border:1px solid #eeeae5; background-color:#f9f7f6;}
+.bg_f_f9{background:#F9F9F9 url(../images/ie/bg_f_f9.gif) repeat-x;background:-moz-linear-gradient(top,#FFF,#F9F9F9);background:-webkit-gradient(linear,0% 0%,0% 100%,from(#FFF),to(#F9F9F9));background:linear-gradient(to bottom,#FFF 0%,#F9F9F9 100%)}
+.blind{overflow:hidden;position:absolute;top:0;left:0;width:0;height:0;padding:0;font-size:0;line-height:0}
+/* Color Box */
+.bd_wrt .color_wrp{position:relative;float:left;margin-right:16px}
+.bd_wrt .color_wrp .fff{position:absolute;width:79px;height:22px;margin:2px;background:#FFF;border-radius:3px}
+.bd_wrt .color_wrp label{top:4px}
+#title_color{position:relative;bottom:2px;width:72px;height:14px;padding:4px;margin-right:2px;border:1px solid #BBB;border-radius:3px}
+#writeForm .clear {display:block; position:relative; clear:both;}
+#files button {outline:0;}
+.btn_upload {width:110px; height:30px; margin:5px 5px 0 0;}
+.btn_upload>form {position:relative; width:110px; height:30px;}
+.btn_upload>form>input {position:absolute; top:0; left:0; width:110px; height:30px; text-indent:-99999px; -moz-opacity:0; filter:alpha(opacity:0); opacity:0; z-index:2; cursor:pointer;}
+.btn_upload_fake {position:absolute; top:0; left:0; z=index:1; display:block; width:110px; height:30px; padding-top:5px; text-align:center; font-family:'Jeju Gothic'; font-size:12px; color:#fff; outline:0; background-color:#8e44ad;}
+.btn_upload_fake>i {margin-right:6px; vertical-align:-3px;}
+.btn_upload_fake.active {background-color:#42cfc6;}
+.msg_upload {margin-top:10px; font-family:'Jeju Gothic'; font-size:13px; letter-spacing:-1.4px;}
+.msg_upload>p {display:none;}
+.msg_upload.is_img>p {display:block; color:#8e44ad;}
+.msg_upload.is_img>span {display:none;}
+#m_img_upoad_1, #m_img_upoad_2, #m_img_upoad_3 {margin-right:3px;}
+#mUpload {clear:both; position:relative; padding:10px; border-top:1px solid #8e44ad; border-bottom:1px solid #42cfc6; background:#fff;}
+#mUpload .fl{padding:0 20px;background:url(../images/photo.png) no-repeat 0 50%;font-size:13px;line-height:30px}
+#mUpload ul {clear:both; overflow:hidden; margin-top:10px;}
+#mUpload li{position:relative; float:left; margin-right:10px; text-align:center;}
+#mUpload li.success {margin-bottom:11px;}
+#mUpload li button{display:block;width:88px;height:88px;background-position:50% 50%;background-repeat:no-repeat;background-size:cover}
+#mUpload li small{overflow:hidden;position:absolute;top:56px;left:0;padding:0 8px;width:72px;height:20px;line-height:10px;text-overflow:ellipsis;color:#777}
+#mUpload .select button:before{content:"";position:absolute;top:0;left:0;width:80px;height:80px;border:4px solid #42cfc6}
+#mUpload .cancelfile{display:block;position:absolute;bottom:0;left:0;width:50%;height:50%}
+#mUpload b{display:block;position:absolute;top:0;right:0;width:18px;height:18px;background:rgba(0,0,0,.4);font-weight:bold;line-height:18px;text-decoration:none;color:#FFF}
+#mUpload .cancelfile b{top:auto;right:0;bottom:0;left:0}
+#mUpload .select b{background:#42cfc6}
+#mUpload #loading{display:none;width:86px;height:86px;background:url(../images/loading.gif) 50% 50% no-repeat;box-shadow:none}
+#mUpload .info{clear:both; float:none;width:auto;height:auto;margin:4px 0;box-shadow:none}

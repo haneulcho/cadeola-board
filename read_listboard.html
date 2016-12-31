@@ -1,0 +1,34 @@
+				<div id="view">
+					<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
+					<form action="./" method="get" class="secretCon" onsubmit="return procFilter(this, input_password)">
+						<input type="hidden" name="mid" value="{$mid}" />
+						<input type="hidden" name="page" value="{$page}" />
+						<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
+						<p><label for="cpw">{$lang->msg_is_secret} {$lang->msg_input_password}</label></p>
+						<div><input type="password" name="password" id="cpw" class="iText" /> <span class="bt"><input type="submit" value="{$lang->cmd_input}" /></span></div>
+					</form>
+					<!--@else-->
+					<div class="vhead">
+					<span><i class="ion-ios7-person"></i><strong>{$oDocument->getNickName()}</strong></span>
+					<span><i class="ion-ios7-clock-outline"></i>{$oDocument->getRegdate('Y-m-d')} {$oDocument->getRegdate('H:i:s')}</span>
+					<span><i class="ion-ios7-eye"></i>{$oDocument->get('readed_count')>0?$oDocument->get('readed_count'):'0'}</span>
+					<span cond="$oDocument->getCommentCount()"><strong><i class="ion-ios7-chatbubble-outline"></i>{$oDocument->getCommentCount()}</strong></span>
+					</div>
+					<div class="vbody">
+						<h2 class="vtitle">{$oDocument->getTitle()}</h2>
+						<div class="vcontents">
+						{$oDocument->getContent(false)}
+						</div>
+						<div class="vupdown">
+							<button class="vup" href="#" onclick="return confirm('정말 추천하시겠습니까?')?doCallModuleAction('document','procDocumentVoteUp','{$oDocument->document_srl}'):false"><i class="ion-thumbsup"></i>{$oDocument->get('voted_count')}</button>
+							<button class="vdown" href="#" onclick="return confirm('정말 비추천하시겠습니까?')?doCallModuleAction('document','procDocumentVoteDown','{$oDocument->document_srl}'):false"><i class="ion-thumbsdown"></i>{$oDocument->get('blamed_count')}</button>
+						</div>
+					</div>
+					<div class="btn_share"><i class="ion-star"></i>글 공유</div>
+					<div class="vbtns">
+						<a href="{getUrl('act','dispBoardWrite','document_srl',$oDocument->document_srl,'comment_srl','')}" cond="$oDocument->isEditable()"><i class="ion-ios7-compose-outline"></i>수정</a>
+						<a href="{getUrl('act','dispBoardDelete','document_srl',$oDocument->document_srl,'comment_srl','')}" cond="$oDocument->isEditable()"><i class="ion-ios7-trash-outline"></i>삭제</a>
+					</div>
+				</div>
+				<!--@end-->
+<include target="_comment.html" />

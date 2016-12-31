@@ -1,0 +1,20 @@
+<include target="_header.html" />
+	<div id="view">
+		<div class="dhead" cond="$oDocument->isExists()">
+			<span class="thidden">알림</span><span class="tooltip"><i class="ion-ios7-person"></i>{$oDocument->getNickName()}</strong>님의 글<block cond="$logged_info->is_admin=='Y'">　{$oDocument->getRegdate('Y-m-d')} {$oDocument->getRegdate('H:i:s')}</block></span>
+			<h2 class="dcomment">{$oDocument->getTitle()}<i class="ion-ios7-chatbubble-outline" cond="$oDocument->getCommentCount()"></i><span class="txt_s" cond="$oDocument->getCommentCount()">{$oDocument->getCommentCount()}</span></h2>
+		</div>
+		<div class="dwrite">
+		<form action="./" method="get" onsubmit="return procFilter(this, delete_document)">
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="page" value="{$page}" />
+			<input type="hidden" name="document_srl" value="{$document_srl}" />
+			<p>{$lang->cmd_document_do} {$lang->confirm_delete}</p>
+			<div class="dbtns">
+				<button type="button" class="dbtn_cancel" onclick="history.back()"><i class="ion-ios7-close-outline"></i>취소</button>
+				<button type="submit" class="dbtn_ok"><i class="ion-ios7-trash-outline"></i>삭제</button>
+			</div>
+		</form>
+		</div>
+	</div>
+<include target="_footer.html" />

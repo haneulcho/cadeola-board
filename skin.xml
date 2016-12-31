@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+    <title xml:lang="ko">CADEOLA(캐더라) 게시판</title>
+    <description xml:lang="ko">별점평가를 포함한 캐더라 전용 게시판</description>
+    <version>1.0</version>
+    <date>2014-11-15</date>
+    <author email_address="stuykr@naver.com" link="http://cadeola.com">
+        <name xml:lang="ko">CADEOLA(캐더라)</name>
+    </author>
+    <extra_vars>
+		<var name="board_style" type="radio">
+			<title xml:lang="ko">목록 유형</title>
+			<options value="listboard">
+				<title xml:lang="ko">목록형</title>
+			</options>
+			<options value="starboard">
+				<title xml:lang="ko">별점평가형</title>
+			</options>
+		</var>
+        <var name="title_fxtxt" type="text">
+            <title xml:lang="ko">갤러리 게시판 상단 텍스트</title>
+			<description xml:lang="ko">게시판 상단에 표시할 한 줄 공지 텍스트를 입력해주세요. (카테고리를 사용하지 않는 게시판에 쓰면 예쁩니다.)</description>
+        </var>
+		<var name="commentCol" type="text">
+			<title xml:lang="ko">코멘트 색상</title>
+			<description xml:lang="ko">코멘트 색상을 정합니다. (#을 제외한 않은 6자리 rgb컬러코드를 입력해주세요.) </description>
+	    </var>
+		<var name="hideListComment" type="select">
+			<title xml:lang="ko">목록 코멘트 숨김 유무</title>
+			<description xml:lang="ko">목록에 표시되는 코멘트 갯수를 숨깁니다. </description>
+			<options value="y">
+				<title xml:lang="ko">보임 (기본)</title>
+			</options>
+			<options value="n">
+				<title xml:lang="ko">숨김</title>
+			</options>
+		</var>m
+		<var name="listIcon" type="select">
+			<title xml:lang="ko">목록 아이콘 숨김 유무</title>
+			<description xml:lang="ko">목록에 표시되는 아이콘을 숨깁니다. </description>
+			<options value="y">
+				<title xml:lang="ko">보임 (기본)</title>
+			</options>
+			<options value="n">
+				<title xml:lang="ko">숨김</title>
+			</options>
+		</var>
+		<var name="readTitleType" type="select">
+			<title xml:lang="ko">글 읽기 화면 제목 표시 위치</title>
+			<description xml:lang="ko">제목, 기타 게시글 관련 정보의 위치를 설정합니다.</description>
+			<options value="top">
+				<title xml:lang="ko">본문 위쪽 (기본)</title>
+			</options>
+			<options value="bottom">
+				<title xml:lang="ko">본문 아래쪽</title>
+			</options>
+		</var>
+		<var name="articleContorl" type="select">
+			<title xml:lang="ko">'이 게시물을...'버튼 숨김 유무</title>
+			<description xml:lang="ko">'이 게시물을...'버튼을 숨깁니다. </description>
+			<options value="y">
+				<title xml:lang="ko">보임 (기본)</title>
+			</options>
+			<options value="n">
+				<title xml:lang="ko">숨김</title>
+			</options>
+		</var>
+		<var name="hideInfo" type="select">
+			<title xml:lang="ko">글 정보(제목, 날짜, 조회수 등등) 숨김 유무</title>
+			<description xml:lang="ko">글 정보 영역을 숨깁니다. </description>
+			<options value="y">
+				<title xml:lang="ko">보임 (기본)</title>
+			</options>
+			<options value="n">
+				<title xml:lang="ko">숨김</title>
+			</options>
+		</var>
+		<var name="hideComment" type="select">
+			<title xml:lang="ko">글 읽기 화면 코멘트 숨김 유무</title>
+			<description xml:lang="ko">코멘트 영역을 숨깁니다. </description>
+			<options value="y">
+				<title xml:lang="ko">보임 (기본)</title>
+			</options>
+			<options value="n">
+				<title xml:lang="ko">숨김</title>
+			</options>
+		</var>
+	</extra_vars>
+</skin>
+
